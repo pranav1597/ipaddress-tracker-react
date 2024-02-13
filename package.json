@@ -1,6 +1,6 @@
 {
   "name": "ipaddr-tracker",
-  "private": true,
+  "private": false,
   "version": "0.0.0",
   "homepage": "https://pranav1597.github.io/ipaddress-tracker-react",
   "type": "module",
