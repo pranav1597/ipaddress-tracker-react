@@ -79,7 +79,7 @@ function App() {
           <div className="address-flex">
             <span className="address-flex-title">ip address</span>
               
-            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.ip}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.ip}>{add.ip}</div>)}</span>
                   
             
           </div>
@@ -88,7 +88,7 @@ function App() {
 
           <div className="address-flex">
             <span className="address-flex-title">location</span>
-            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.location.city}, {add.location.region}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.ip}>{add.location.city}, {add.location.region}</div>)}</span>
           </div>
 
           <span className='line'></span>
@@ -96,7 +96,7 @@ function App() {
 
           <div className="address-flex">
             <span className="address-flex-title">Timezone</span>
-            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>UTC {add.location.timezone}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.ip}>UTC {add.location.timezone}</div>)}</span>
           </div>
 
           
@@ -104,7 +104,7 @@ function App() {
 
           <div className="address-flex">
             <span className="address-flex-title">Isp</span>
-            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.isp}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.ip}>{add.isp}</div>)}</span>
           </div>
 
         </div>
@@ -120,7 +120,7 @@ function App() {
             // console.log('add', [add.location.lat, add.location.lng] )
             return (
 
-              <MapContainer key={add.as.asn} center={[add.location.lat ,add.location.lng]} zoom={13} >
+              <MapContainer key={add.ip} center={[add.location.lat ,add.location.lng]} zoom={13} >
                  <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

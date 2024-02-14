@@ -26,7 +26,7 @@ export default function MarkerPosition({addr}){
     {addr.map(add => {
         return(
 
-            <Marker className="mark" icon={icon} position={position[0]} key={add.as.asn}>
+            <Marker className="mark" icon={icon} position={position[0]} key={add.ip}>
                 <Popup offset={point(15, 35)}>{add.location.city}, {add.location.country}</Popup>
             </Marker>
         )
