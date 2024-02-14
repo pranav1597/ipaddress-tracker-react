@@ -83,16 +83,24 @@ function App() {
                   
             
           </div>
+          
+          <span className='line'></span>
 
           <div className="address-flex">
             <span className="address-flex-title">location</span>
             <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.location.city}, {add.location.region}</div>)}</span>
           </div>
 
+          <span className='line'></span>
+          
+
           <div className="address-flex">
             <span className="address-flex-title">Timezone</span>
             <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>UTC {add.location.timezone}</div>)}</span>
           </div>
+
+          
+          <span className='line'></span>
 
           <div className="address-flex">
             <span className="address-flex-title">Isp</span>
