@@ -13,6 +13,10 @@ function App() {
   const [addr, setAddr] = useState([]);
   const [search, setSearch] = useState("");
   
+  const checkIpAddress =
+    /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gi
+  const checkDomain =
+    /^[a-zA-Z0-9][a-zA-Z0-9-]{1,61}[a-zA-Z0-9](?:\.[a-zA-Z]{2,})+/
  
 
     useEffect(function() {
@@ -22,22 +26,26 @@ function App() {
     }, [])
   
 
-  // const position = [addr.location.lat, addr.location.lng]
-  // useEffect(() => {
-  //   map.flyTo(position, 13, {
-  //     animate: true
-  //   })
-  // }, [map, position])
-
-// console.log('addr', addr)
+    function getAddress(){
+      fetch(`https://geo.ipify.org/api/v2/country,city?apiKey=${import.meta.env.VITE_IP_ADDR_API_KEY}&${checkIpAddress.test(search) ? `ipAddress=${search}` : checkDomain.test(search) ? `domain=${search}` : "" }`)
+      .then(res => res.json())
+      .then(data => setAddr([data]))
+    }
   
 
-//   var map = L.map('map').setView([51.505, -0.09], 13);
+    function handleSubmit(e) {
+      e.preventDefault()
+      getAddress()
+      setSearch('')
+    }
+    
+    function onKeyEnter(){
+      getAddress()
+      setSearch('')
+    }
 
-//   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-//     maxZoom: 19,
-//     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-// }).addTo(map);
+// console.log('addr', addr)
+
 
   return (
     <div id='map' className='map'>
@@ -48,10 +56,20 @@ function App() {
             <input 
             type='text' 
             className='search-input'
-            
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter")
+                  onKeyEnter();
+              }}
             placeholder="Search for any IP address or domain"
             ></input>
-            <button type='submit'  className='search-btn'><img src={iconArrow} alt='arrow icon' id='icon-arrow' ></img></button>
+            <button type='submit'
+             onClick={handleSubmit} 
+             className='search-btn'>
+              <img src={iconArrow} alt='arrow icon' id='icon-arrow' >
+                </img>
+            </button>
           </div>
 
 
@@ -61,24 +79,24 @@ function App() {
           <div className="address-flex">
             <span className="address-flex-title">ip address</span>
               
-            <span className="address-flex-show">{addr.map(add => <div>{add.ip}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.ip}</div>)}</span>
                   
             
           </div>
 
           <div className="address-flex">
             <span className="address-flex-title">location</span>
-            <span className="address-flex-show">{addr.map(add => <div>{add.location.city}, {add.location.region}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.location.city}, {add.location.region}</div>)}</span>
           </div>
 
           <div className="address-flex">
             <span className="address-flex-title">Timezone</span>
-            <span className="address-flex-show">{addr.map(add => <div>UTC {add.location.timezone}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>UTC {add.location.timezone}</div>)}</span>
           </div>
 
           <div className="address-flex">
             <span className="address-flex-title">Isp</span>
-            <span className="address-flex-show">{addr.map(add => <div>{add.isp}</div>)}</span>
+            <span className="address-flex-show">{addr.map(add => <div key={add.as.asn}>{add.isp}</div>)}</span>
           </div>
 
         </div>
@@ -91,9 +109,10 @@ function App() {
       <div className="map-section">
         {
           addr.map(add => {
+            // console.log('add', [add.location.lat, add.location.lng] )
             return (
 
-              <MapContainer center={[add.location.lat ,add.location.lng]} zoom={13} >
+              <MapContainer key={add.as.asn} center={[add.location.lat ,add.location.lng]} zoom={13} >
                  <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
