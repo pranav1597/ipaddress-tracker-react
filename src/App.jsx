@@ -3,7 +3,7 @@ import './App.css'
 import L from 'leaflet'
 import "leaflet/dist/leaflet.css"
 import iconArrow from '../images/icon-arrow.svg'
-import { MapContainer, TileLayer} from 'react-leaflet'
+import { LayersControl, MapContainer, TileLayer, ZoomControl} from 'react-leaflet'
 import MarkerPosition from './MarkerPosition'
 
 function App() {
@@ -120,12 +120,60 @@ function App() {
             // console.log('add', [add.location.lat, add.location.lng] )
             return (
 
-              <MapContainer key={add.ip} center={[add.location.lat ,add.location.lng]} zoom={13} >
+              <MapContainer key={add.ip} center={[add.location.lat ,add.location.lng]} zoom={13} zoomControl={false} >
                  <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
               />
+              <ZoomControl position='bottomleft'></ZoomControl>
               <MarkerPosition addr={addr} />
+
+              {/* google satelite layers */}
+              <LayersControl position='bottomright'>
+
+                {/* Satellite View  */}
+              <LayersControl.Overlay name="Satellite View">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}'
+                maxZoom= {20}
+                subdomains={['mt1','mt2','mt3']}
+              />
+              </LayersControl.Overlay>
+
+              {/* Street View  */}
+              <LayersControl.Overlay name="Streets View">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}'
+                maxZoom= {20}
+                subdomains={['mt1','mt2','mt3']}
+              />
+              </LayersControl.Overlay>
+
+              {/* Hybrid View  */}
+              <LayersControl.Overlay name="Hybrid View">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}'
+                maxZoom= {20}
+                subdomains={['mt1','mt2','mt3']}
+              />
+              </LayersControl.Overlay>
+
+
+              {/* Terrain View  */}
+              <LayersControl.Overlay name="Terrain View">
+              <TileLayer
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                url='https://{s}.google.com/vt/lyrs=p&x={x}&y={y}&z={z}'
+                maxZoom= {20}
+                subdomains={['mt1','mt2','mt3']}
+              />
+              </LayersControl.Overlay>
+
+
+              </LayersControl>
               </MapContainer>
             )
           }
